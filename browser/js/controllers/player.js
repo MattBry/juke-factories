@@ -26,7 +26,8 @@ app.controller('PlayerCtrl', function($scope, $rootScope,PlayerFactory){
   // incoming events (from Album or toggle)
   $scope.$on('pause', PlayerFactory.pause);
   $scope.$on('play', PlayerFactory.play);
-
+  $scope.$on('next', PlayerFactory.nextSong);
+  $scope.$on('prev', PlayerFactory.prevSong);
   // functionality
   // function pause () {
   //   audio.pause();

@@ -1,10 +1,10 @@
-app.factory('PlayerFactory',function($q){
+app.factory('PlayerFactory',function($q, ajax){
 
 	var audio = document.createElement('audio');
 	var isPlaying = false;
 	var currentSong;
-function play (event, song){
-	 
+	var album = ajax.album;
+function play (event, song){	 
     // stop existing audio (e.g. other song) in any case
     // pause();
     // $scope.playing = true;
@@ -14,7 +14,6 @@ function play (event, song){
 
     // $scope.currentSong = song;
     // var audio = document.createElement('audio');
-    console.log('we started at ',audio.currentTime);
     if(currentSong===song) {
     	audio.play();
     	// isPlaying = false;
@@ -32,7 +31,6 @@ function play (event, song){
 function pause () {
     audio.pause();
     isPlaying = false;
-    console.log(audio.currentTime);
     var stopTime = audio.currentTime;
   }
 
@@ -40,6 +38,8 @@ function pause () {
   returnObj.play = play;
   returnObj.pause = pause;
   returnObj.toggle = toggle;
+  returnObj.prevSong = prevSong;
+  returnObj.nextSong = nextSong;
   returnObj.isPlaying = isPlaying;
   returnObj.currentSong = currentSong;
   returnObj.getCurrentSong = getCurrentSong;
@@ -48,7 +48,7 @@ function pause () {
 
   var toggle = function (song) {
     // if ($scope.playing) $rootScope.$broadcast('pause');
-    if ($scope.playing) pause()
+    if ($scope.playing) pause();
     else $rootScope.$broadcast('play', song);
   }
 
@@ -65,8 +65,14 @@ function pause () {
   	return currentSong;
   }
 
-  function next() {
-
+  function nextSong() {
+  	var idx = album.songs.indexOf(currentSong);
+  	var song = album.songs[idx + 1];
+  	play(null, song);
   }
-
+	function prevSong() {
+		var idx = album.songs.indexOf(currentSong);
+		var song = album.songs[idx - 1];
+		play(null, song);
+	}
 })
